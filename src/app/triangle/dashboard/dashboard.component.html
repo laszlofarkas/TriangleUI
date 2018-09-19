@@ -1,3 +1,64 @@
-<p>
-  dashboard works!
-</p>
+<section class="section">
+  <div class="container">
+
+    <form [formGroup]="triangleForm" (ngSubmit)="onSubmit()">
+
+      <div class="field is-horizontal">
+        <div class="field-label is-normal">
+          <label for="a" class="label">1st side of triangle</label>
+        </div>
+        <div class="field-body">
+          <div class="field">
+            <div class="control">
+              <input type="number" name="a" id="a" class="input" formControlName="a">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="field is-horizontal">
+        <div class="field-label is-normal">
+          <label for="b" class="label">2nd side of triangle</label>
+        </div>
+        <div class="field-body">
+          <div class="field">
+            <div class="control">
+              <input type="number" name="b" id="b" class="input" formControlName="b">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="field is-horizontal">
+        <div class="field-label is-normal">
+          <label for="c" class="label">3rd side of triangle</label>
+        </div>
+        <div class="field-body">
+          <div class="field">
+            <div class="control">
+              <input type="number" name="c" id="c" class="input" formControlName="c">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="field is-horizontal">
+        <div class="field-label">
+          <!-- Left empty for spacing -->
+        </div>
+        <div class="field-body">
+          <div class="field">
+            <div class="control buttons">
+              <button type="submit" class="button is-primary">
+                Calculate
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </form>
+
+
+  </div>
+</section>
