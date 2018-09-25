@@ -1,8 +1,6 @@
 <section class="section">
   <div class="container">
 
-    {{triangleType}}
-
     <form [formGroup]="triangleForm" (ngSubmit)="onSubmit()">
 
       <div class="field is-horizontal">
@@ -69,7 +67,7 @@
         <div class="field-body">
           <div class="field">
             <p class="help is-danger" *ngIf="triangleForm.errors && triangleForm.errors.triangle">
-                All sides of the triangle should be less then the sum of other two sides
+              All sides of the triangle should be less then the sum of other two sides
             </p>
             <div class="control buttons">
               <button type="submit" class="button is-primary" [ngClass]="{'is-outlined': !triangleForm.valid, 'is-loading': submitting}"
@@ -81,8 +79,35 @@
         </div>
       </div>
 
+      <div class="field is-horizontal" *ngIf="triangleType">
+        <div class="field-label is-normal">
+          <label for="result" class="label">Triangle type</label>
+        </div>
+        <div class="field-body">
+          <div class="field">
+            <div class="control">
+              <input type="text" name="result" id="result" class="input is-static" [value]="triangleType" readonly>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </form>
 
+    <div class="modal" [ngClass]="{'is-active': showError}">
+      <div class="modal-background"></div>
+      <div class="modal-content">
+          <article class="message is-danger">
+              <div class="message-header">
+                <p>Service unavailable</p>
+                <button class="delete" (click)="showError = false"></button>
+              </div>
+              <div class="message-body">
+                Please check the server is running on {{serverUrl}}
+              </div>
+            </article>
+      </div>
+    </div>
 
   </div>
 </section>

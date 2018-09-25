@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
+import { environment } from '../../../environments/environment';
+
 import { Triangle } from '../triangle';
 import { TriangleValidators } from '../triangle.validators';
 import { TriangleService } from '../triangle.service';
@@ -16,6 +18,8 @@ export class DashboardComponent implements OnInit {
   triangle: Triangle;
   triangleType = null;
   submitting = false;
+  showError = false;
+  serverUrl = environment.serverUrl;
 
   constructor(
     private triangleService: TriangleService
@@ -44,7 +48,10 @@ export class DashboardComponent implements OnInit {
 
       this.triangleService.getTriangleType(this.triangle).subscribe((result) => {
         this.submitting = false;
-        this.triangleType = result;
+        this.triangleType = (<string>result).toLowerCase();
+      }, (error) => {
+        this.submitting = false;
+        this.showError = true;
       });
     }
   }
