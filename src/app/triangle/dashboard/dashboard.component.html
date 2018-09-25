@@ -12,8 +12,14 @@
         <div class="field-body">
           <div class="field">
             <div class="control">
-              <input type="number" name="a" id="a" class="input" formControlName="a">
+              <input type="number" name="a" id="a" class="input" formControlName="a" [ngClass]="{'is-danger': getErrors('a')}">
             </div>
+            <p class="help is-danger" *ngIf="getErrors('a') && getErrors('a').required">
+              1st side of triangle is required
+            </p>
+            <p class="help is-danger" *ngIf="getErrors('a') && getErrors('a').positive">
+              value should be greater than 0
+            </p>
           </div>
         </div>
       </div>
@@ -25,8 +31,14 @@
         <div class="field-body">
           <div class="field">
             <div class="control">
-              <input type="number" name="b" id="b" class="input" formControlName="b">
+              <input type="number" name="b" id="b" class="input" formControlName="b" [ngClass]="{'is-danger': getErrors('b')}">
             </div>
+            <p class="help is-danger" *ngIf="getErrors('b') && getErrors('b').required">
+              2nd side of triangle is required
+            </p>
+            <p class="help is-danger" *ngIf="getErrors('b') && getErrors('b').positive">
+              value should be greater than 0
+            </p>
           </div>
         </div>
       </div>
@@ -38,8 +50,14 @@
         <div class="field-body">
           <div class="field">
             <div class="control">
-              <input type="number" name="c" id="c" class="input" formControlName="c">
+              <input type="number" name="c" id="c" class="input" formControlName="c" [ngClass]="{'is-danger': getErrors('c')}">
             </div>
+            <p class="help is-danger" *ngIf="getErrors('c') && getErrors('c').required">
+              3rd side of triangle is required
+            </p>
+            <p class="help is-danger" *ngIf="getErrors('c') && getErrors('c').positive">
+              value should be greater than 0
+            </p>
           </div>
         </div>
       </div>
@@ -50,8 +68,12 @@
         </div>
         <div class="field-body">
           <div class="field">
+            <p class="help is-danger" *ngIf="triangleForm.errors && triangleForm.errors.triangle">
+                All sides of the triangle should be less then the sum of other two sides
+            </p>
             <div class="control buttons">
-              <button type="submit" class="button is-primary">
+              <button type="submit" class="button is-primary" [ngClass]="{'is-outlined': !triangleForm.valid, 'is-loading': submitting}"
+                [disabled]="submitting || !triangleForm.valid || !triangleForm.dirty" [title]="!triangleForm.valid ? 'The form is invalid' : ''">
                 Calculate
               </button>
             </div>

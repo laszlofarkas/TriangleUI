@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { Triangle } from '../triangle';
+import { TriangleValidators } from '../triangle.validators';
 import { TriangleService } from '../triangle.service';
 
 @Component({
@@ -26,10 +27,10 @@ export class DashboardComponent implements OnInit {
 
   private initForm() {
     this.triangleForm = new FormGroup({
-      'a': new FormControl('', [Validators.required, Validators.min(0)]),
-      'b': new FormControl('', [Validators.required, Validators.min(0)]),
-      'c': new FormControl('', [Validators.required, Validators.min(0)])
-    });
+      'a': new FormControl('', [Validators.required, TriangleValidators.positive]),
+      'b': new FormControl('', [Validators.required, TriangleValidators.positive]),
+      'c': new FormControl('', [Validators.required, TriangleValidators.positive])
+    }, TriangleValidators.triangle);
   }
 
   onSubmit() {
@@ -45,6 +46,15 @@ export class DashboardComponent implements OnInit {
         this.submitting = false;
         this.triangleType = result;
       });
+    }
+  }
+
+  getErrors(controlName: String) {
+    const status = this.triangleForm.get(controlName);
+    if (status.dirty || status.touched) {
+      return status.errors;
+    } else {
+      return null;
     }
   }
 
