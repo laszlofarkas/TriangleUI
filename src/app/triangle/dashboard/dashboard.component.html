@@ -94,16 +94,18 @@
 
     </form>
 
-    <div class="modal" [ngClass]="{'is-active': showError}">
+    <div class="modal is-active" *ngIf="error">
       <div class="modal-background"></div>
       <div class="modal-content">
           <article class="message is-danger">
               <div class="message-header">
-                <p>Service unavailable</p>
-                <button class="delete" (click)="showError = false"></button>
+                <p>{{error.title}}</p>
+                <button class="delete" (click)="error = null"></button>
               </div>
               <div class="message-body">
-                Please check the server is running on {{serverUrl}}
+                <p *ngFor="let message of error.messages">
+                  {{message}}
+                </p>
               </div>
             </article>
       </div>

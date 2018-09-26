@@ -14,12 +14,14 @@ import { TriangleService } from '../triangle.service';
 })
 export class DashboardComponent implements OnInit {
 
+  // Angular form
   triangleForm = null;
-  triangle: Triangle;
-  triangleType = null;
+  // determinate is there any request is in progress
   submitting = false;
-  showError = false;
-  serverUrl = environment.serverUrl;
+  // result of the success response
+  triangleType = null;
+  // result of the fail response
+  error: {title: string, messages: string[]} = null;
 
   constructor(
     private triangleService: TriangleService
@@ -29,6 +31,9 @@ export class DashboardComponent implements OnInit {
     this.initForm();
   }
 
+  /**
+   * Initialize Angular FormGroup to use in HTML
+   */
   private initForm() {
     this.triangleForm = new FormGroup({
       'a': new FormControl('', [Validators.required, TriangleValidators.positive]),
@@ -37,25 +42,55 @@ export class DashboardComponent implements OnInit {
     }, TriangleValidators.triangle);
   }
 
+  /**
+   * processing the submitted form's data and post a request to the server
+   */
   onSubmit() {
     if (this.triangleForm.valid && !this.submitting) {
       this.submitting = true;
-      const values = this.triangleForm.value;
-      this.triangle = new Triangle();
-      this.triangle.a = values.a;
-      this.triangle.b = values.b;
-      this.triangle.c = values.c;
 
-      this.triangleService.getTriangleType(this.triangle).subscribe((result) => {
+      // prepare sent data
+      const values = this.triangleForm.value;
+      const triangle: Triangle = new Triangle();
+      triangle.a = values.a;
+      triangle.b = values.b;
+      triangle.c = values.c;
+
+      // send request
+      this.triangleService.getTriangleType(triangle).subscribe((result) => {
+        // successful response
         this.submitting = false;
         this.triangleType = (<string>result).toLowerCase();
-      }, (error) => {
+      }, (err) => {
+        // handling error
         this.submitting = false;
-        this.showError = true;
+        if (err.status === 0) {
+          // UI is not able to reach server
+          this.error = {
+            title: 'Service unavailable',
+            messages: [
+              'Please check the server is running on ' + environment.serverUrl
+            ]
+          };
+        } else {
+          // server response but not with 2xx
+          this.error = {
+            title: err.error.error,
+            messages: []
+          };
+          err.error.errors.forEach(element => {
+            this.error.messages.push((element.field ? (element.field + ' ') : '') + element.defaultMessage);
+          });
+        }
       });
     }
   }
 
+  /**
+   * Get all validation errors for the given field.
+   * If there is no error or the user has not been touched that field it returns null
+   * @param controlName Name of the FormControl
+   */
   getErrors(controlName: String) {
     const status = this.triangleForm.get(controlName);
     if (status.dirty || status.touched) {
