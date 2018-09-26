@@ -12,6 +12,13 @@ Frontend layer of a multi-module web-app
 npm install -g @angular/cli
 ```
 
+### npm packages
+Before the first run, you have to install development packages  
+For installing these npm packages run the following command in the module base directory
+```
+nmp install
+```
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.2.3.
 
 ## Development server
